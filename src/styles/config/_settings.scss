@@ -1,0 +1,24 @@
+.font-size {
+  &--12 {
+    @apply text-xs;
+  }
+  &--14 {
+    @apply text-sm;
+  }
+  &--16 {
+    @apply text-base;
+  }
+  &--18 {
+    @apply text-lg;
+  }
+  &--20 {
+    @apply text-xl;
+  }
+  &--30 {
+    @apply text-3xl;
+  }
+}
+
+.container-section {
+  @apply container mx-auto px-2 2xl:px-40;
+}

@@ -17,7 +17,26 @@
     "jsx": "preserve",
     "incremental": true,
     "baseUrl": "src",
-    "paths": {}
+    "paths": {
+      "@organisms/*": ["common/components/organisms/*"],
+      "@molecules/*": ["common/components/molecules/*"],
+      "@atoms/*": ["common/components/atoms/*"],
+      "@components/*": ["common/components/*"],
+      "@interfaces/*": ["common/interfaces/*"],
+      "@constants/*": ["common/constants/*"],
+      "@contexts/*": ["common/contexts/*"],
+      "@services/*": ["common/services/*"],
+      "@helpers/*": ["common/helpers/*"],
+      "@assets/*": ["common/assets/*"],
+      "@helper/*": ["common/helper/*"],
+      "@hooks/*": ["common/hooks/*"],
+      // "@redux/*": ["common/state/*"],
+      "@data/*": ["common/data/*"],
+      "@modules/*": ["modules/*"],
+      "@api/*": ["common/api/*"],
+      "@styles/*": ["styles/*"],
+      "@pages/*": ["pages/*"]
+    }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"],
