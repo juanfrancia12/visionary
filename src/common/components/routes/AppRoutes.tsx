@@ -1,5 +1,5 @@
 import { getToken as getTokenUser } from "@helpers/auth.helper"
-import { lazy, Suspense, useState } from "react"
+import { Suspense } from "react"
 import {
   BrowserRouter as Router,
   Navigate,
@@ -7,119 +7,160 @@ import {
   Routes,
 } from "react-router-dom"
 import { ProtectedRoute } from "./ProtectedRoute"
-import { toast } from "react-toastify"
+import Spinner from "@atoms/spinner"
+import LoginPage from "@pages/auth"
+import FormLogin from "@modules/auth/components/FormLogin"
+import FormRegister from "@modules/auth/components/FormRegister"
 
-const notify = () => toast("Wow so easy!")
-
-const Error404 = () => {
+const Error404 = (): JSX.Element => {
   return <div>ERROR 404</div>
 }
 
-const LoginPage = () => {
-  return <div>Login page</div>
-}
-
-const UnauthorizedPage = () => {
+const UnauthorizedPage = (): JSX.Element => {
   return <div>Unauthorized page</div>
 }
 
-const HomePage = () => {
-  return <button onClick={notify}>Home page cliente jeej</button>
+const Sidebar = (): JSX.Element => {
+  return <div className="w-1/6">SIDEBAR ITEMS</div>
+}
+
+const Layout = ({ children }: any): JSX.Element => {
+  return <div className="flex-grow">{children}</div>
 }
 
 // const Error404 = lazy(() => import("@pages/Error/404"))
-// const LoginPage = lazy(() => import("@pages/Login"))
+// const LoginPage = lazy(async () => await import("@pages/login"))
 
-export function AppRoutes() {
+export function AppRoutes(): JSX.Element {
   // const getToken = false
-  const getToken = !!getTokenUser
+  const getToken = !(getTokenUser === null)
 
   return (
     <Router>
-      <Suspense fallback={<div>cargando pagina</div>}>
-        {/* <Layout> */}
-        <Suspense fallback={<div>CARGANDO ....</div>}>
-          <Routes>
-            // ??? RUTAS PUBLICAS
-            {/* <Route index element={<div>Landing Page (Public)</div>} /> */}
-            {/* <Route index element={<HomePage />} /> */}
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/error-404" element={<Error404 />} />
-            <Route path="/error-403" element={<UnauthorizedPage />} />
-            // ??? RUTAS PRIVADAS PARA TODOS LOS USUARIOS
-            <Route element={<ProtectedRoute isAllowed={getToken} />}>
-              <Route path="/home" element={<HomePage />} />
-              <Route path="/profile" element={<div>PROFILE PAGE</div>} />
-              <Route
-                path="/history"
-                element={<div>HISTORIAS DEL USUARIO PAGE</div>}
-              />
-              <Route
-                path="/suggestions"
-                element={
-                  <div>TODAS LAS SUGERENCIAS DEL ESTUDIANTE O DOCENTE</div>
-                }
-              />
-              <Route
-                path="/dashboard"
-                element={<div>Dashboard (Private)</div>}
-              />
-            </Route>
-            // ??? RUTAS PRIVADAS DE ACUERDO AL PERMISO DEL USUARIO
-            <Route
-              path="/food/create"
-              element={
-                <ProtectedRoute redirectTo="/home" isAllowed={getToken}>
-                  <div className="">USUARIO (Private & permission 'crear')</div>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/food/edit"
-              element={
-                <ProtectedRoute redirectTo="/home" isAllowed={getToken}>
-                  <div className="">
-                    Profile (Private & permission 'editar')
-                  </div>
-                </ProtectedRoute>
-              }
-            />
-            // ??? RUTAS PRIVADAS DE ACUERDO AL ROL DEL USUARIO
-            <Route
-              path="/admin"
-              element={
-                <ProtectedRoute redirectTo="/home" isAllowed={getToken}>
-                  <div className="">
-                    Admin (Private & permission 'estudiante')
-                  </div>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin"
-              element={
-                <ProtectedRoute redirectTo="/home" isAllowed={getToken}>
-                  <div className="">Admin (Private & permission 'docente')</div>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin"
-              element={
-                <ProtectedRoute redirectTo="/home" isAllowed={getToken}>
-                  <div className="">
-                    Admin (Private & permission 'encargado-obu')
-                  </div>
-                </ProtectedRoute>
-              }
-            />
-            {/* <Route path="*" element={<Navigate to="/login" replace />} /> */}
-            // ??? RUTA PUBLICA
-            <Route path="/404" element={<Error404 />} />
-            {/* <Route path="*" element={<Navigate to={"/404"} replace />} /> */}
-          </Routes>
-        </Suspense>
-        {/* </Layout> */}
+      <Suspense fallback={<Spinner />}>
+        <div className="w-full flex">
+          {getToken && <Sidebar />}
+          <Layout>
+            <Suspense fallback={<Spinner />}>
+              <Routes>
+                <Route index element={<div>Landing Page (Public)</div>} />
+                {/* // ??? RUTAS PRIVADAS PARA TODOS LOS USUARIOS */}
+                <Route element={<ProtectedRoute isAllowed={getToken} />}>
+                  <Route
+                    index
+                    element={<div className="">USUARIO (Private )</div>}
+                  />
+                  <Route path="/profile" element={<div>PROFILE PAGE</div>} />
+                  <Route
+                    path="/history"
+                    element={<div>HISTORIAS DEL USUARIO PAGE</div>}
+                  />
+                  <Route
+                    path="/suggestions"
+                    element={
+                      <div>TODAS LAS SUGERENCIAS DEL ESTUDIANTE O DOCENTE</div>
+                    }
+                  />
+                  <Route
+                    path="/dashboard"
+                    element={<div>Dashboard (Private)</div>}
+                  />
+                </Route>
+
+                {/* <Route
+                  path="/"
+                  element={
+                    <ProtectedRoute
+                      redirectTo="/auth/login"
+                      isAllowed={getToken}
+                    >
+                      <div className="">
+                        USUARIO (Private & permission 'crear')
+                      </div>
+                    </ProtectedRoute>
+                  }
+                /> */}
+                <Route
+                  path="/auth"
+                  element={<Navigate to={"/auth/login"} replace />}
+                />
+                {/* <Route
+                  path="/"
+                  element={<Navigate to={"/auth/login"} replace />}
+                /> */}
+                {/* // ??? RUTAS PUBLICAS */}
+
+                <Route path="auth" element={<LoginPage />}>
+                  <Route path="login" element={<FormLogin />} />
+                  <Route path="register" element={<FormRegister />} />
+                </Route>
+                {/* <Route index element={<HomePage />} /> */}
+                {/* <Route path="/login" element={<LoginPage />} /> */}
+
+                {/* // ??? RUTAS PRIVADAS DE ACUERDO AL PERMISO DEL USUARIO */}
+                {/* <Route
+                  path="/"
+                  element={
+                    <ProtectedRoute
+                      redirectTo="/auth/login"
+                      isAllowed={getToken}
+                    >
+                      <div className="">
+                        USUARIO (Private & permission 'crear')
+                      </div>
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/food/edit"
+                  element={
+                    <ProtectedRoute redirectTo="/home" isAllowed={getToken}>
+                      <div className="">
+                        Profile (Private & permission 'editar')
+                      </div>
+                    </ProtectedRoute>
+                  }
+                /> */}
+                {/* // ??? RUTAS PRIVADAS DE ACUERDO AL ROL DEL USUARIO */}
+                {/* <Route
+                  path="/admin"
+                  element={
+                    <ProtectedRoute redirectTo="/home" isAllowed={getToken}>
+                      <div className="">
+                        Admin (Private & permission 'estudiante')
+                      </div>
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin"
+                  element={
+                    <ProtectedRoute redirectTo="/home" isAllowed={getToken}>
+                      <div className="">
+                        Admin (Private & permission 'docente')
+                      </div>
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin"
+                  element={
+                    <ProtectedRoute redirectTo="/home" isAllowed={getToken}>
+                      <div className="">
+                        Admin (Private & permission 'encargado-obu')
+                      </div>
+                    </ProtectedRoute>
+                  }
+                /> */}
+                {/* <Route path="*" element={<Navigate to="/login" replace />} /> */}
+                {/* // ??? RUTA PUBLICA */}
+                <Route path="/403" element={<UnauthorizedPage />} />
+                <Route path="/404" element={<Error404 />} />
+                <Route path="*" element={<Navigate to={"/404"} replace />} />
+              </Routes>
+            </Suspense>
+          </Layout>
+        </div>
       </Suspense>
     </Router>
   )

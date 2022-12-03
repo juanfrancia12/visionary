@@ -20,4 +20,8 @@
   img {
     @apply w-full h-auto block;
   }
+
+  input {
+    @apply outline-none;
+  }
 }

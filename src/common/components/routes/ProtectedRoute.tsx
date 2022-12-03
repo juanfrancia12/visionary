@@ -1,21 +1,21 @@
 import { Navigate, Outlet } from "react-router-dom"
 
-type Props = {
+interface Props {
   isAllowed: boolean | null
   redirectTo?: string
-  children?: any
+  children?: React.ReactElement
 }
 
 // JSX.Element | JSX.Element[]
 
 export const ProtectedRoute = ({
   isAllowed = false,
-  redirectTo = "/login",
+  redirectTo = "/auth/login",
   children,
-}: Props) => {
-  if (!isAllowed) {
+}: Props): JSX.Element => {
+  if (!(isAllowed ?? false)) {
     return <Navigate to={redirectTo} replace />
   }
 
-  return children ? children : <Outlet />
+  return children ?? <Outlet />
 }

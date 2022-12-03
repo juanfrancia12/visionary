@@ -1,0 +1,7 @@
+.button {
+  @apply rounded-md py-3 px-4 border text-white border-blue-800/50 bg-blue-800/80 hover:bg-blue-800/90;
+
+  &__ghost {
+    @apply bg-white text-blue-800/80 hover:bg-gray-100;
+  }
+}
