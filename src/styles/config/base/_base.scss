@@ -24,4 +24,8 @@
   input {
     @apply outline-none;
   }
+
+  table {
+    width: -webkit-fill-available;
+  }
 }

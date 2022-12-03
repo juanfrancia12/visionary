@@ -3,12 +3,12 @@ import { Navigate, Outlet } from "react-router-dom"
 const REDIRECT_TO_DEFAULT = "/auth/login"
 const IS_ALLOWED_DEFAULT = false
 
-export const ProtectedRoute = ({
+export const PublicRoute = ({
   isAllowed = IS_ALLOWED_DEFAULT,
   redirectTo = REDIRECT_TO_DEFAULT,
   children,
 }: Props): JSX.Element => {
-  if (!(isAllowed ?? false)) {
+  if (isAllowed ?? false) {
     return <Navigate to={redirectTo} replace />
   }
 
