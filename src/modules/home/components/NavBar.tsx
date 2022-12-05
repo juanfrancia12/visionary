@@ -11,14 +11,14 @@ const NavBar = (): JSX.Element => {
             <AiOutlineMenu />
           </button>
           <div className="flex items-center justify-center gap-10">
-            <input
+            {/* <input
               type="search"
               name="search"
               id="search"
               placeholder="Escribe para buscar ..."
               className="min-w-[20rem] rounded-md py-1.5 px-3 border border-gray-200"
               autoComplete="off"
-            />
+            /> */}
             <div className="flex gap-5">
               {ITEMS_NOTIFICATIONS.map((notification) => {
                 return (
@@ -37,15 +37,15 @@ const NavBar = (): JSX.Element => {
                 )
               })}
             </div>
-            <button className="flex gap-3 justify-center items-center">
+            <div className="flex gap-3 justify-center items-center cursor-pointer">
               <img
                 src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1207.jpg"
                 alt="Rashad"
                 className="rounded-full w-10"
               />
-              <div>name</div>
+              <div className="whitespace-nowrap">Juan Francia Sánchez</div>
               <AiOutlineDown />
-            </button>
+            </div>
           </div>
         </div>
       </header>
